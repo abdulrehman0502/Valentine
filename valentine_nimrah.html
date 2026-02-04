@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,40 +6,90 @@
 <style>
 body {
   background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
   text-align: center;
-  padding: 40px;
+  padding: 30px;
   color: #fff;
 }
+
 .card {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.2);
   border-radius: 20px;
   padding: 30px;
-  max-width: 400px;
+  max-width: 420px;
   margin: auto;
 }
+
 h1 { font-size: 32px; }
 p { font-size: 18px; }
+
+.buttons {
+  margin-top: 25px;
+}
+
 button {
-  background: #ff4d6d;
   border: none;
-  color: white;
-  padding: 15px 25px;
+  padding: 14px 25px;
   font-size: 18px;
   border-radius: 30px;
   cursor: pointer;
+  margin: 10px;
 }
-button:hover { background: #ff2e55; }
+
+.yes {
+  background: #ff4d6d;
+  color: white;
+}
+
+.no {
+  background: #444;
+  color: white;
+}
+
+.result {
+  margin-top: 25px;
+  font-size: 20px;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 15px;
+  margin-top: 15px;
+}
 </style>
 </head>
+
 <body>
 <div class="card">
   <h1>Nimrah 💌</h1>
-  <p>I saw a Valentine’s reel today…</p>
-  <p>And it made me realize something simple.</p>
+  <p>I wanted to ask you a question...</p>
+  <p>since I've been planing to make it for you so here it is.</p>
   <p><b>I don’t want this Valentine’s to pass without asking you.</b></p>
-  <h2>Will you be my Valentine? 🌹</h2>
-  <button onclick="alert('I hope this made you smile ❤️')">Tap here 💖</button>
+
+  <h2>Will you be my Valentine Nimu my Cutu bubu? 🌹</h2>
+
+  <div class="buttons">
+    <button class="yes" onclick="sayYes()">YES 💖</button>
+    <button class="no" onclick="sayNo()">NO 🔪</button>
+  </div>
+
+  <div class="result" id="result"></div>
 </div>
+
+<script>
+function sayYes() {
+  document.getElementById("result").innerHTML = `
+    <p>💖 Thank you baby I knew it keheheheheh ✨💖</p>
+    <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="Hello Kitty">
+  `;
+}
+
+function sayNo() {
+  document.getElementById("result").innerHTML = `
+    <p>😈 Marna hai tereko dar ni lagta 😈 🔪</p>
+    <img src="https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif" alt="Cat with knife">
+  `;
+}
+</script>
 </body>
 </html>
