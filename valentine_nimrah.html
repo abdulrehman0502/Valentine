@@ -6,12 +6,24 @@
 
 <style>
 body {
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  background: radial-gradient(circle at top, #ff9a9e, #fad0c4);
   font-family: Arial, sans-serif;
   text-align: center;
   padding: 30px;
   color: white;
   overflow: hidden;
+}
+
+/* Glowing Name */
+#name {
+  font-size: 48px;
+  font-weight: bold;
+  animation: glowPulse 2s infinite alternate;
+  text-shadow: 0 0 10px #fff, 0 0 20px #ff4d6d, 0 0 40px #ff4d6d;
+}
+@keyframes glowPulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
 }
 
 .card {
@@ -22,6 +34,7 @@ body {
   margin: auto;
 }
 
+/* Buttons */
 button {
   border: none;
   padding: 14px 25px;
@@ -32,66 +45,59 @@ button {
   position: relative;
 }
 
-.yes { background: #ff4d6d; color: white; }
+.yes {
+  background: #ff4d6d;
+  color: white;
+  box-shadow: 0 0 10px #ff4d6d, 0 0 20px #ff4d6d;
+  animation: yesGlow 1.5s infinite alternate;
+}
+@keyframes yesGlow {
+  from { box-shadow: 0 0 10px #ff4d6d; }
+  to { box-shadow: 0 0 25px #ff4d6d, 0 0 40px #ff4d6d; }
+}
+
 .no { background: #333; color: white; position: absolute; }
 
-#result {
-  margin-top: 20px;
-  font-size: 20px;
-  min-height: 40px;
-}
+#result { margin-top: 20px; font-size: 20px; }
 
-img {
-  max-width: 100%;
-  border-radius: 15px;
-  margin-top: 15px;
-}
-
-/* Floating hearts */
+/* Hearts */
 .heart {
   position: fixed;
   bottom: -10px;
   font-size: 24px;
   animation: floatUp 3s linear forwards;
 }
-
 @keyframes floatUp {
-  to {
-    transform: translateY(-110vh);
-    opacity: 0;
-  }
+  to { transform: translateY(-110vh); opacity: 0; }
 }
 
-/* Proposal Accepted animation */
+/* Proposal */
 #proposal {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0);
-  font-size: 40px;
+  font-size: 38px;
   font-weight: bold;
-  color: #fff;
   text-shadow: 0 0 20px #ff4d6d;
   animation: pop 0.8s ease forwards;
   display: none;
 }
-
 @keyframes pop {
   0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
   60% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
   100% { transform: translate(-50%, -50%) scale(1); }
 }
 
-/* Sparkles */
-.sparkle {
+/* Fireworks particles */
+.fire {
   position: fixed;
   font-size: 18px;
-  animation: sparkle 1.5s linear forwards;
+  animation: firework 1.5s linear forwards;
 }
-
-@keyframes sparkle {
+@keyframes firework {
   to {
-    transform: translateY(-100px);
+    transform: translateY(-120px) scale(0.5);
     opacity: 0;
   }
 }
@@ -100,12 +106,18 @@ img {
 
 <body>
 
+<div id="name">Nimrah 💖</div>
+
 <div class="card">
-  <h1 id="typing"></h1>
-  <h2>Since we have been together for years nimu cutu babe 🌹♥️...</h2>
-  <h3>So Will you be my valentines Nimu baby? 👀🌹</h3>
+  <h2 id="line1"></h2>
+  <h2 id="line2"></h2>
+  <h2 id="line3"></h2>
+
   <button class="yes" onclick="sayYes()">YES 💖</button>
-  <button class="no" id="noBtn" onmouseover="runAway()">NO 🙂</button>
+  <button class="no" id="noBtn" onmouseover="runAway()">NO 😶</button>
+
+  <br>
+  <button onclick="playSong()">🎵 Play Our Song</button>
 
   <div id="result"></div>
 </div>
@@ -114,78 +126,65 @@ img {
 
 <script>
 
-/* Typing animation */
-const text = "I don’t want this Valentine’s to pass without asking you...";
-let i = 0;
-function typeWriter() {
-  if (i < text.length) {
-    document.getElementById("typing").innerHTML += text.charAt(i);
-    i++;
-    setTimeout(typeWriter, 40);
+/* Typing */
+const lines = [
+  "Since we have been together for Years Nimu Cutu Bubu..... 🌹👀♥️",
+  "I don't want this Valentine's to pass without asking you...... 👀💋",
+  "Will you be my Valentine Babe? 👀💋♥️🌹💕"
+];
+let lineIndex=0, charIndex=0;
+function typeLines(){
+  if(lineIndex<lines.length){
+    let el=document.getElementById("line"+(lineIndex+1));
+    if(charIndex<lines[lineIndex].length){
+      el.innerHTML+=lines[lineIndex][charIndex++];
+      setTimeout(typeLines,40);
+    } else { lineIndex++; charIndex=0; setTimeout(typeLines,500); }
   }
 }
-typeWriter();
+typeLines();
 
-/* YES click */
-function sayYes() {
-  document.getElementById("result").innerHTML = `
-    <p>💖 Thank you baby I knew it keheheheheh 💖</p>
-    <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif">
-  `;
-
-  createHearts();
-  showProposal();
-  sparkles();
+/* YES */
+function sayYes(){
+  document.getElementById("result").innerHTML="💖 Thank you baby I knew it keheheheheh 💖";
+  hearts(); fireworks();
+  document.getElementById("proposal").style.display="block";
 }
 
-/* Floating hearts */
-function createHearts() {
-  for (let i = 0; i < 30; i++) {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "💖";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (Math.random() * 20 + 20) + "px";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 3000);
-  }
-}
-
-/* Proposal animation */
-function showProposal() {
-  const p = document.getElementById("proposal");
-  p.style.display = "block";
-}
-
-/* Sparkles */
-function sparkles() {
-  for (let i = 0; i < 25; i++) {
-    const s = document.createElement("div");
-    s.className = "sparkle";
-    s.innerHTML = "✨";
-    s.style.left = Math.random() * 100 + "vw";
-    s.style.top = (Math.random() * 100) + "vh";
-    document.body.appendChild(s);
-    setTimeout(() => s.remove(), 1500);
+/* Hearts */
+function hearts(){
+  for(let i=0;i<25;i++){
+    let h=document.createElement("div");
+    h.className="heart"; h.innerHTML="💖";
+    h.style.left=Math.random()*100+"vw";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),3000);
   }
 }
 
-/* NO button runs */
-function runAway() {
-  const btn = document.getElementById("noBtn");
-  const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-  const y = Math.random() * (window.innerHeight - btn.offsetHeight);
-  btn.style.left = x + "px";
-  btn.style.top = y + "px";
+/* Fireworks */
+function fireworks(){
+  for(let i=0;i<60;i++){
+    let f=document.createElement("div");
+    f.className="fire"; f.innerHTML="✨";
+    f.style.left=Math.random()*100+"vw";
+    f.style.top=Math.random()*80+"vh";
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),1500);
+  }
 }
 
-/* If NO somehow clicked */
-document.getElementById("noBtn").onclick = function() {
-  document.getElementById("result").innerHTML = `
-    <p>😈 Marna hai tereko dar ni lagta 😈</p>
-    <img src="https://media.giphy.com/media/l1J9EdzfOSgfyueLm/giphy.gif">
-  `;
-};
+/* NO runs */
+function runAway(){
+  let b=document.getElementById("noBtn");
+  b.style.left=Math.random()*(window.innerWidth-100)+"px";
+  b.style.top=Math.random()*(window.innerHeight-50)+"px";
+}
+
+/* Song */
+function playSong(){
+  window.open("https://www.youtube.com/results?search_query=Die+With+A+Smile+Lady+Gaga+Bruno+Mars","_blank");
+}
 
 </script>
 
